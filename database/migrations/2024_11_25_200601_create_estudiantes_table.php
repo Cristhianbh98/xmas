@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id();
-            $table->string('cedula');
-            $table->string('last_name');
-            $table->string('first_name');
-            $table->string('age');
-            $table->date('birth_date');
-            $table->string('tipo_entrega');
+            $table->string('cedula')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('first_name')->nullable();
+            $table->integer('age')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->string('tipo_entrega')->nullable();
             $table->foreignId('representante_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

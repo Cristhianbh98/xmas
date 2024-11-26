@@ -19,6 +19,7 @@ use Filament\Forms\Components\TextInput;
 
 // Tables
 use Filament\Tables\Columns\TextColumn;
+use RepresentanteFormSchema;
 
 class RepresentanteResource extends Resource
 {
@@ -31,33 +32,7 @@ class RepresentanteResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                TextInput::make('first_name')
-                    ->label('Nombres')
-                    ->required(),
-                TextInput::make('last_name')
-                    ->label('Apellidos')
-                    ->required(),
-                TextInput::make('cedula')
-                    ->label('Cédula')
-                    ->unique()
-                    ->regex('/^[0-9]{10}$/')
-                    ->required(),
-                Select::make('parentesco')
-                    ->label('Parentesco')
-                    ->options([
-                        'papa' => 'Papá',
-                        'mama' => 'Mamá',
-                    ])
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Correo Electrónico')
-                    ->email()
-                    ->required(),
-                TextInput::make('phone')
-                    ->label('Teléfono')
-                    ->required(),
-            ]);
+            ->schema(RepresentanteFormSchema::get());
     }
 
     public static function table(Table $table): Table

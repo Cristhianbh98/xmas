@@ -13,8 +13,9 @@ class Estudiante extends Model
         'cedula',
         'last_name',
         'first_name',
-        'email',
-        'phone',
+        'age',
+        'representante_id',
+        'tipo_entrega',
         'created_by',
         'updated_by'
     ];
