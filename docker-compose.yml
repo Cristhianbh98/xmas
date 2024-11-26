@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  database:
+    image: mariadb:10.6
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_USER: ${DB_USERNAME}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+    networks:
+      - xmas-network
+    volumes:
+      - xmas_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=database
+      - PMA_PORT=3306
+    networks:
+      - xmas-network
+
+volumes:
+  xmas_data:
+
+networks:
+  xmas-network:
