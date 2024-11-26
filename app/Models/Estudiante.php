@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Representante extends Model
+class Estudiante extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'cedula',
-        'parentesco',
         'last_name',
         'first_name',
         'email',
@@ -20,7 +19,7 @@ class Representante extends Model
         'updated_by'
     ];
 
-    public function estudiante() {
-        return $this->hasMany(Estudiante::class);
+    public function representante() {
+        return $this->belongsTo(Representante::class);
     }
 }
