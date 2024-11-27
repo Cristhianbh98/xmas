@@ -16,4 +16,8 @@ class Cdi extends Model
         'address',
         'gps',
     ];
+
+    public function estudiantes() {
+        return $this->hasMany(Estudiante::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EstudianteResource\Pages;
 use App\Filament\Resources\EstudianteResource\RelationManagers;
 use App\Models\Cdc;
+use App\Models\Cdi;
 use App\Models\Estudiante;
 use App\Models\Representante;
 use Faker\Provider\ar_EG\Text;
@@ -113,7 +114,7 @@ class EstudianteResource extends Resource
                     )
                     ->live()
                     ->required(),               
-                Select::make('tipo_entrega_cdc')
+                Select::make('cdc_id')
                     ->label('CDC')
                     ->options(Cdc::all()->pluck('name', 'id'))
                     ->visible(
@@ -122,9 +123,9 @@ class EstudianteResource extends Resource
                         }
                     )
                     ->required(),
-                Select::make('tipo_entrega_cdi')
+                Select::make('cdi_id')
                     ->label('CDI')
-                    ->options(Cdc::all()->pluck('name', 'id'))
+                    ->options(Cdi::all()->pluck('name', 'id'))
                     ->visible(
                         function (Get $get): bool {
                             return $get('tipo_entrega') === 'cdi';
@@ -184,5 +185,18 @@ class EstudianteResource extends Resource
             'create' => Pages\CreateEstudiante::route('/create'),
             'edit' => Pages\EditEstudiante::route('/{record}/edit'),
         ];
+    }
+
+    public static function getTableQuery(): Builder
+    {
+        $user = Auth::user();
+
+        if ($user->role === 'cdc/cdi') {
+            return static::getModel()::query()
+                ->where('tipo_entrega', 'cdc')
+                ->orWhere('tipo_entrega', 'cdi');
+        }
+
+        return static::getModel()::query();
     }
 }

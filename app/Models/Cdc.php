@@ -18,4 +18,8 @@ class Cdc extends Model
         'email',
         'created_at',
     ];
+
+    public function estudiantes() {
+        return $this->hasMany(Estudiante::class);
+    }
 }

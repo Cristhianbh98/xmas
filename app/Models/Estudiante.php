@@ -16,11 +16,22 @@ class Estudiante extends Model
         'age',
         'representante_id',
         'tipo_entrega',
+        'cdc_id',
+        'cdi_id',
+        'barrio_id',
         'created_by',
         'updated_by'
     ];
 
     public function representante() {
         return $this->belongsTo(Representante::class);
+    }
+
+    public function cdc() {
+        return $this->belongsTo(Cdc::class);
+    }
+
+    public function cdi() {
+        return $this->belongsTo(Cdi::class);
     }
 }
