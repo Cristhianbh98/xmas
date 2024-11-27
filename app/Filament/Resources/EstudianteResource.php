@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EstudianteResource\Pages;
 use App\Filament\Resources\EstudianteResource\RelationManagers;
+use App\Models\Cdc;
 use App\Models\Estudiante;
 use App\Models\Representante;
 use Faker\Provider\ar_EG\Text;
@@ -14,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Get;
 
 // Forms
 use Filament\Forms\Components\TextInput;
@@ -22,6 +24,8 @@ use RepresentanteFormSchema;
 
 // Tables
 use Filament\Tables\Columns\TextColumn;
+use PhpParser\Node\Expr\Cast\Bool_;
+use Illuminate\Support\Facades\Auth;
 
 class EstudianteResource extends Resource
 {
@@ -88,13 +92,44 @@ class EstudianteResource extends Resource
                     ) */
                 Select::make('tipo_entrega')
                     ->label('Tipo de Entrega')
-                    ->options([
-                        'cdc' => 'CDC',
-                        'cdi' => 'CDI',
-                        'patronato' => 'Patronato',
-                        'colegio' => 'Colegio',
-                        'barrio' => 'Barrio',
-                    ])
+                    ->options(
+                        function () {
+                            $role = Auth::user()->role;
+
+                            if ($role === 'cdc/cdi') {
+                                return [
+                                    'cdc' => 'CDC',
+                                    'cdi' => 'CDI',
+                                ];
+                            }
+
+                            return [
+                                'cdc' => 'CDC',
+                                'cdi' => 'CDI',
+                                'patronato' => 'Patronato',
+                                'barrio' => 'Barrio',
+                            ];
+                        }
+                    )
+                    ->live()
+                    ->required(),               
+                Select::make('tipo_entrega_cdc')
+                    ->label('CDC')
+                    ->options(Cdc::all()->pluck('name', 'id'))
+                    ->visible(
+                        function (Get $get): bool {
+                            return $get('tipo_entrega') === 'cdc';
+                        }
+                    )
+                    ->required(),
+                Select::make('tipo_entrega_cdi')
+                    ->label('CDI')
+                    ->options(Cdc::all()->pluck('name', 'id'))
+                    ->visible(
+                        function (Get $get): bool {
+                            return $get('tipo_entrega') === 'cdi';
+                        }
+                    )
                     ->required(),
             ]);
     }

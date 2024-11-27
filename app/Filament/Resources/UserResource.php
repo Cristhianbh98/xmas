@@ -62,6 +62,7 @@ class UserResource extends Resource
                     ->options([
                         'user' => 'Usuario',
                         'admin' => 'Administrador',
+                        'cdc/cdi' => 'CDC/CDI',
                     ])
                     ->default('user')
                     ->required(),
