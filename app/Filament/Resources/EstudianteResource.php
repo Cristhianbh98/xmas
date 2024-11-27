@@ -4,9 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EstudianteResource\Pages;
 use App\Filament\Resources\EstudianteResource\RelationManagers;
+use App\Models\Barrio;
 use App\Models\Cdc;
 use App\Models\Cdi;
 use App\Models\Estudiante;
+use App\Models\Parroquia;
 use App\Models\Representante;
 use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
@@ -17,6 +19,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 
 // Forms
 use Filament\Forms\Components\TextInput;
@@ -104,12 +107,29 @@ class EstudianteResource extends Resource
                                 ];
                             }
 
+                            if ($role === 'd-barrio') {
+                                return [
+                                    'barrio' => 'Barrio',
+                                ];
+                            }
+
                             return [
                                 'cdc' => 'CDC',
                                 'cdi' => 'CDI',
                                 'patronato' => 'Patronato',
                                 'barrio' => 'Barrio',
                             ];
+                        }
+                    )
+                    ->default(
+                        function() {
+                            $role = Auth::user()->role;
+
+                            if ($role === 'd-barrio') {
+                                return 'barrio';
+                            }
+
+                            return '';
                         }
                     )
                     ->live()
@@ -129,6 +149,83 @@ class EstudianteResource extends Resource
                     ->visible(
                         function (Get $get): bool {
                             return $get('tipo_entrega') === 'cdi';
+                        }
+                    )
+                    ->required(),
+                Select::make('barrio_id')
+                    ->label('Barrio')
+                    ->options(
+                        function() {
+                            $user = Auth::user();
+
+                            if ($user->role === 'd-barrio') {
+                                return Barrio::where('id', $user->barrio_id)->pluck('name', 'id');
+                            }
+
+                            return Barrio::all()->pluck('name', 'id');
+                        }
+                    )
+                    ->default(
+                        function() {
+                            $user = Auth::user();
+
+                            if ($user->role === 'd-barrio') {
+                                return $user->barrio_id;
+                            }
+
+                            return '';
+                        }
+                    )
+                    ->visible(
+                        function (Get $get): bool {
+                            return $get('tipo_entrega') === 'barrio';
+                        }
+                    )
+                    ->hidden(
+                        function (): bool {
+                            $user = Auth::user();
+                            return $user->role !== 'd-barrio';
+                        }
+                    )
+                    ->required(),
+                Select::make('parroquia_id')
+                    ->label('Parroquia')
+                    ->options(Parroquia::all()->pluck('name', 'id'))
+                    ->live()
+                    ->visible(
+                        function (Get $get): bool {
+                            return $get('tipo_entrega') === 'barrio';
+                        }
+                    )
+                    ->hidden(
+                        function (): bool {
+                            $user = Auth::user();
+                            return $user->role === 'd-barrio';
+                        }
+                    )
+                    ->afterStateUpdated(
+                        function($state, Set $set) {
+                            $set('barrio_id', null);
+                        }
+                    )
+                    ->required(),
+                Select::make('barrio_id')
+                    ->label('Barrio')
+                    ->searchable()
+                    ->options(
+                        function (Get $get) {
+                            return Barrio::where('parroquia_id', $get('parroquia_id'))->pluck('name', 'id');
+                        }
+                    )
+                    ->visible(
+                        function (Get $get): bool {
+                            return $get('tipo_entrega') === 'barrio';
+                        }
+                    )
+                    ->hidden(
+                        function (Get $get): bool {
+                            $user = Auth::user();
+                            return $user->role === 'd-barrio' || !$get('parroquia_id');
                         }
                     )
                     ->required(),

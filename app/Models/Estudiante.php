@@ -19,6 +19,7 @@ class Estudiante extends Model
         'cdc_id',
         'cdi_id',
         'barrio_id',
+        'parroquia_id',
         'created_by',
         'updated_by'
     ];

@@ -63,6 +63,8 @@ class UserResource extends Resource
                         'user' => 'Usuario',
                         'admin' => 'Administrador',
                         'cdc/cdi' => 'CDC/CDI',
+                        'd-barrio' => 'Dirigente Barrial',
+                        'g-parroquias' => 'Gestor General'
                     ])
                     ->default('user')
                     ->required(),
