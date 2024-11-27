@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 // Forms
 use Filament\Forms\Components\TextInput;
@@ -76,5 +77,10 @@ class RepresentanteResource extends Resource
             'create' => Pages\CreateRepresentante::route('/create'),
             'edit' => Pages\EditRepresentante::route('/{record}/edit'),
         ];
+    }
+
+    public static function canAccess(): bool 
+    {
+        return Auth::user()->role === 'admin';
     }
 }
