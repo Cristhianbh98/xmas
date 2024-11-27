@@ -14,7 +14,7 @@ class AttendeeSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = new SplFileObject(database_path('seeders/attendees.csv'));
+        /* $data = new SplFileObject(database_path('seeders/attendees.csv'));
         $data->setFlags(SplFileObject::READ_CSV);
         $data->setCsvControl(',');
         $it = new \LimitIterator($data, 1);
@@ -41,6 +41,6 @@ class AttendeeSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => now(),
             ]);
-        }
+        } */
     }
 }

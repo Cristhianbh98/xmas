@@ -90,6 +90,7 @@ class EstudianteResource extends Resource
                     ->label('Tipo de Entrega')
                     ->options([
                         'cdc' => 'CDC',
+                        'cdi' => 'CDI',
                         'patronato' => 'Patronato',
                         'colegio' => 'Colegio',
                         'barrio' => 'Barrio',

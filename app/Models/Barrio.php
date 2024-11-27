@@ -5,22 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Representante extends Model
+class Barrio extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'cedula',
-        'parentesco',
-        'last_name',
-        'first_name',
-        'email',
+        'name',
+        'presidente',
         'phone',
+        'parroquia_id',
         'created_by',
         'updated_by'
     ];
 
-    public function estudiantes() {
-        return $this->hasMany(Estudiante::class);
+    public function parroquia() {
+        return $this->belongsTo(Parroquia::class);
     }
 }
