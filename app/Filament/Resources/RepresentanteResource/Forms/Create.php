@@ -25,15 +25,12 @@ class RepresentanteFormSchema
                 ->options([
                     'papa' => 'Papá',
                     'mama' => 'Mamá',
-                ])
-                ->required(),
+                ]),
             TextInput::make('email')
                 ->label('Correo Electrónico')
-                ->email()
-                ->required(),
+                ->email(),
             TextInput::make('phone')
                 ->label('Teléfono')
-                ->required(),
         ];
     }
 }
