@@ -66,7 +66,7 @@ class CdiEstuUpload extends Seeder
                 'first_name' => ($row[7] ?? ''),
                 'barrio_id' => $barrio->id,
                 'parroquia_id' => $parroquia->id,
-                'cdc_id' => $cdc->id
+                'cdi_id' => $cdc->id
             ]);
         }
     }
