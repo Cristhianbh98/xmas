@@ -64,6 +64,7 @@ class CdcEstuUpload extends Seeder
                 'cedula' => ($row[5] ?? ''),
                 'last_name' => ($row[6] ?? ''),
                 'first_name' => ($row[7] ?? ''),
+                'tipo_entrega' => 'cdc',
                 'barrio_id' => $barrio->id,
                 'parroquia_id' => $parroquia->id,
                 'cdc_id' => $cdc->id
