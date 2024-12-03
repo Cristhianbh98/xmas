@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = new SplFileObject(database_path('seeders/users.csv'));
+        $data = new SplFileObject(database_path('seeders/users2.csv'));
         $data->setFlags(SplFileObject::READ_CSV);
         $data->setCsvControl(',');
         $it = new \LimitIterator($data, 1);
