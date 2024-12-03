@@ -20,7 +20,13 @@ class Representante extends Model
         'updated_by'
     ];
 
-    public function estudiantes() {
+    public function getNombreCompletoAttribute()
+    {
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
+    public function estudiantes() 
+    {
         return $this->hasMany(Estudiante::class);
     }
 }

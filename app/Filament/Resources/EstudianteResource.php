@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\EstudianteExporter;
 use App\Filament\Resources\EstudianteResource\Pages;
 use App\Filament\Resources\EstudianteResource\RelationManagers;
 use App\Models\Barrio;
@@ -11,6 +12,7 @@ use App\Models\Estudiante;
 use App\Models\Parroquia;
 use App\Models\Representante;
 use Faker\Provider\ar_EG\Text;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Tables\Actions\ExportAction;
 
 // Forms
 use Filament\Forms\Components\TextInput;
@@ -265,6 +268,12 @@ class EstudianteResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label('Exportar a Excel')
+                    ->formats([ExportFormat::Csv])
+                    ->exporter(EstudianteExporter::class)
             ]);
     }
 
